@@ -29,14 +29,9 @@ interface AuthProviderProps {
 const AuthContext = createContext({} as AuthContextData);
 
 export function signOut() {
-  if (process.browser) {
-    destroyCookie(undefined, 'nextauth.token');
-    destroyCookie(undefined, 'nextauth.refreshToken');
-    Router.push('/')
-  } else {
-    console.log('fjdskfjlsakjfdlkas');
-    return Promise.reject(new AuthTokenError());
-  }
+  destroyCookie(undefined, 'nextauth.token');
+  destroyCookie(undefined, 'nextauth.refreshToken');
+  Router.push('/')
 }
 
 export function AuthProvider({children}: AuthProviderProps) {
