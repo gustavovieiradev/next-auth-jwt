@@ -1,8 +1,9 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import Router from 'next/router';
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import { AxiosError } from "axios";
+import { AuthTokenError } from "../services/errors/AuthTokenError";
 
 interface User {
   email: string;
@@ -28,9 +29,14 @@ interface AuthProviderProps {
 const AuthContext = createContext({} as AuthContextData);
 
 export function signOut() {
-  destroyCookie(undefined, 'nextauth.token');
-  destroyCookie(undefined, 'nextauth.refreshToken');
-  Router.push('/')
+  if (process.browser) {
+    destroyCookie(undefined, 'nextauth.token');
+    destroyCookie(undefined, 'nextauth.refreshToken');
+    Router.push('/')
+  } else {
+    console.log('fjdskfjlsakjfdlkas');
+    return Promise.reject(new AuthTokenError());
+  }
 }
 
 export function AuthProvider({children}: AuthProviderProps) {

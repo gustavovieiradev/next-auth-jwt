@@ -1,9 +1,9 @@
 import { FormEvent, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext';
-import { api } from '../services/api';
 import styles from '../styles/Home.module.css'
+import { withSSRGuest } from '../utils/withSSRGuest';
 
-export default function Home() {
+export default function SignIn() {
   // estagiario@rocketseat.team
   const [email, setEmail] = useState<string>('diego@rocketseat.team');
   const [password, setPassword] = useState<string>('123456');
@@ -23,3 +23,9 @@ export default function Home() {
     </form>
   )
 }
+
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {}
+  }
+})
